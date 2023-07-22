@@ -1,0 +1,70 @@
+[json-server]
+
+1. json-server 정의
+    프론트엔드 개발 연습을 위해서 프런트엔드 프로젝트에서 실무와 비슷한 느낌으로 하기 위하여 가짜 API 서버를 만들어주는 도구이다.
+    이 도구를 사용하면 json 파일 하나만 있으면 연습용 서버를 쉽게 구성해주므로, 직접 백엔드를 구현하지 않아도 된다.
+
+1. json-server 주의사항
+    프로덕션에서 사용하기위하여 만들어진것이 아니기 때문에 이 서버를 사용하여 실제 프로젝트를 개발하면 안된다.
+    실제 프로젝트를 개발할 때는 백엔드쪽 공부를 해서, 서버를 직접 준비하거나 Firebase를 사용해서 구현을 해야한다.
+
+
+    
+1. data.json : 가짜 API 서버 만들기 (* src 디렉토리 바깥에 생성한다.)
+    {
+        "posts": [
+            {
+                "id": 1,
+                "title": "리덕스 미들웨어를 배워봅시다",
+                "body": "리덕스 미들웨어를 직접 만들어보면 이해하기 쉽죠."
+            },
+            {
+                "id": 2,
+                "title": "redux-thunk를 사용해봅시다",
+                "body": "redux-thunk를 사용해서 비동기 작업을 처리해봅시다!"
+            },
+            {
+                "id": 3,
+                "title": "redux-saga도 사용해봅시다",
+                "body": "나중엔 redux-saga를 사용해서 비동기 작업을 처리하는 방법도 배워볼 거예요."
+            }
+        ]
+    }
+
+
+
+1. API 열어보기
+    $ cd app1
+    $ npx json-server ./data.json --port 4000
+
+1. API 테스트 : 브라우져에서 JSON 데이터가 보이면, API 서버 준비 완료
+    http://localhost:4000/posts
+    http://localhost:4000/posts/1
+
+
+
+1. axios 설치 : REST API(get, post, put, delete) 문법으로 API를 취득하기 위해서, REST API Client인 axios 라이브러리를 설치하기
+    $ cd app1
+    $ npm i axios
+
+1. src/api/posts.js : axios를 사용하여 REST API 문법으로 API 요청하기
+    // axios 임포트 : REST API 문법(get, post, put, delete)으로 API를 요청하는 라이브러리
+    import axios from 'axios'
+
+    // post 목록을 가져오는 비동기 함수
+    export const getPosts = async () => {
+        const response = await axios.get('http://localhost:4000/posts')
+        return response.data
+    }
+
+    // ID로 post를 조회하는 비동기 함수
+    export const getPostById = async id => {
+        const response = await axios.get(`http://localhost:4000/posts/${id}`)
+        return response.data
+    }
+
+
+
+1. 테스트 : 기존과 동일하게 작동하는지 확인
+    $ cd app1
+    $ npm start
